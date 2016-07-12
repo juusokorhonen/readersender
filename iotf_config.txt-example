@@ -1,0 +1,6 @@
+[application]
+org=$orgId
+id=$myApplication
+auth-method=apikey
+auth-key=$key
+auth-token=$token
