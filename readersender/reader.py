@@ -3,29 +3,27 @@
 """
 Reader classes.
 
-@file           readers.py
+@file           reader.py
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
-
-
 import abc
 import logging
+from . import ReaderSender
 
-import readersender
 
-class Reader(readersender.ReaderSender):
+class Reader(ReaderSender):
   """
   An abstract reader class for easy interfacing.
   @version 1.3
   """
-  def __init__(self, logger=None, loglevel=logging.INFO):      
+  def __init__(self, *args, **kwargs):      
     """      
     Initializes a new reader object. After
     initialization, you can set eg. debug_mode, silent_mode, and log_format
     parameter.   
     """         
-    super(Reader, self).__init__(logger=logger, loglevel=loglevel)
+    super().__init__(*args, **kwargs)
     # Any custom initialization goes here or to subclasses
 
   @abc.abstractmethod

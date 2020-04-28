@@ -23,29 +23,19 @@ class ReaderSender(object, metaclass=abc.ABCMeta):
     initialization, you can set eg. debug_mode, silent_mode, and log_format
     parameter.   
     """         
-    self._logger = logger
+    self._logger = logger or logging.getLogger(__name__)
     self._loglevel = loglevel
-    self.log_format = "[{loglevel}] {msg}"
+
 
   @property
   def logger(self):
     return self._logger
 
+
   @logger.setter
   def logger(self, logger):
     self._logger = logger
-    if (self.loglevel is not None):
-      self._logger.setLevel(self.loglevel)
-  
-  @property
-  def loglevel(self):
-    return self._loglevel
-
-  @loglevel.setter
-  def loglevel(self, loglevel):
-    self._loglevel = loglevel
-    if (self.logger is not None):
-      self.logger.setLevel(self._loglevel)  
+    self._logger.setLevel(self._loglevel)
   
 
   @abc.abstractmethod
@@ -55,6 +45,7 @@ class ReaderSender(object, metaclass=abc.ABCMeta):
     """  
     return
 
+
   @abc.abstractmethod
   def disconnect(self):
     """
@@ -62,40 +53,10 @@ class ReaderSender(object, metaclass=abc.ABCMeta):
     """
     return
 
-  def _log_msg(self, msg, loglevel, file=sys.stdout):
+
+  def log(self, msg, loglevel):
     """
-    Internal log formatter.
+    Log msg with given loglevel.
     """   
-    print(self.log_format.format(msg=msg, loglevel=loglevel.upper()), file=file)
-    
-  def log_debug(self, msg):
-    """
-    Logs a debug message if debug_mode is set.
-    @param[in]    msg   - Message to to be logged
-    """
-    if (self.logger is not None):
-      self.logger.debug(msg)
-    else:
-      if (self.loglevel <= logging.DEBUG):
-        self._log_msg(msg, 'debug')
-
-  def log_info(self, msg):
-    """
-    Logs an info message to the console.
-    @param[in]    msg   - Message to be logged
-    """
-    if (self.logger is not None):
-      self.logger.info(msg)
-    else:
-      if (self.loglevel <= logging.INFO):
-        self._log_msg(msg, 'info')
-
-  def log_error(self, msg):
-    """
-    Logs an error to the console.
-    @param[in]    msg   - Message to be logged
-    """
-    if (self.logger is not None):
-      self.logger.error(msg)
-    else:
-      self._log_msg(msg, 'error', file=sys.stderr)
+    self.logger.log(loglevel, msg)
+  

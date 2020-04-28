@@ -22,7 +22,6 @@ def test_imports():
 	"""Tests importing the modules.
 	"""
 	from .context import readersender
-	from .context import logger
 	
 
 def test_readersender():
@@ -60,5 +59,14 @@ def test_foosender():
 	fs = readersender.senders.FooSender()
 	fs = readersender.FooSender()
 
+
+
+def test_randomreader():
+	"""Tests the RandomReader class.
+	"""
+	from .context import readersender
+
+	rr = readersender.readers.RandomReader()
+	rr = readersender.RandomReader()
 
 

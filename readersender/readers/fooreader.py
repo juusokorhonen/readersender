@@ -7,24 +7,25 @@ Foo reader for testing.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
+import logging
 from ..reader import Reader
 
 class FooReader(Reader):
-  """
-  A foo reader class that does nothing.
-  @version 1.0
-  """
+	"""
+	A foo reader class that does nothing.
+	@version 1.0
+	"""
 
-  def connect(self):
-    self.log_debug("Connecting to foo")
-    return True
-
-
-  def disconnect(self):
-    self.log_debug("Disconnecting from foo")
+	def connect(self):
+		self.log("Connecting to foo", logging.INFO)
+		return True
 
 
-  def read(self):
-    data = "foo"
-    self.log_debug("Reading (not really) data: {}".format(data))
-    return data
+	def disconnect(self):
+		self.log("Disconnecting from foo", logging.INFO)
+
+
+	def read(self):
+		data = "foo"
+		self.log("Pretending to read data: {}".format(data), logging.INFO)
+		return data

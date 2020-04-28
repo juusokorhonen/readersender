@@ -14,8 +14,8 @@ except ModuleNotFoundError as e:
     import warnings
     warnings.warn("'paho.mqtt.client' not found. MQTT functionality disabled.", ImportWarning)
     mqtt = None
-
 from ..sender import Sender
+
 
 class MQTTSender(Sender):
     def __init__(self, config=None, *args, **kwargs):      
