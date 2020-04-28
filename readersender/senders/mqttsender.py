@@ -7,11 +7,9 @@ MQTTSender class.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
-
-
 import paho.mqtt.client as mqtt
 
-from .senders import Sender
+from ..sender import Sender
 
 class MQTTSender(Sender):
     def __init__(self, config, *args, **kwargs):      

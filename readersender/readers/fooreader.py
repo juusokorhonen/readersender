@@ -7,13 +7,9 @@ Foo reader for testing.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
+from ..reader import Reader
 
-
-import abc
-
-import readers
-
-class FooReader(readers.Reader):
+class FooReader(Reader):
   """
   A foo reader class that does nothing.
   @version 1.0

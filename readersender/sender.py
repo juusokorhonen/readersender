@@ -19,8 +19,6 @@ class Sender(readersender.ReaderSender):
   An abstract class that takes care of data processing and sending.
   @version 1.3
   """
-  __metaclass__ = abc.ABCMeta
-
   def __init__(self, logger=None, loglevel=logging.INFO):      
     """      
     Initializes a new sender object. After

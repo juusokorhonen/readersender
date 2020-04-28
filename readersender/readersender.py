@@ -12,7 +12,7 @@ import abc
 import logging
 import logging.handlers
 
-class ReaderSender(object):
+class ReaderSender(object, metaclass=abc.ABCMeta):
   """
   An abstract class that takes care of some basic functionality and interfaces.
   @version  1.0

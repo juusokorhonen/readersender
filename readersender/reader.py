@@ -19,8 +19,6 @@ class Reader(readersender.ReaderSender):
   An abstract reader class for easy interfacing.
   @version 1.3
   """
-  __metaclass__ = abc.ABCMeta
-
   def __init__(self, logger=None, loglevel=logging.INFO):      
     """      
     Initializes a new reader object. After

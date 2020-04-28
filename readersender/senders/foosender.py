@@ -7,13 +7,9 @@ Foo sender for testing.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
+from ..sender import Sender
 
-
-import abc
-
-import senders
-
-class FooSender(senders.Sender):
+class FooSender(Sender):
   """
   A foo sender class that does nothing.
   @version 1.0

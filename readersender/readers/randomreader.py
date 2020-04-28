@@ -7,17 +7,14 @@ Random value reader for testing.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
-
-
-import abc
 import random
 import logging
 import json
 import datetime
 
-import readers
+from ..reader import Reader
 
-class RandomReader(readers.Reader):
+class RandomReader(Reader):
   """
   A reader that returns random values according to given scheme.
   @version 1.0
