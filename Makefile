@@ -5,19 +5,36 @@ K := $(foreach exec,$(EXECUTABLES),\
 nothing:
 	echo "Nothing done."
 
-init:
-	pipenv install
+.PHONY: clean
+clean:
+	test -d dist && rm -rf dist/ || true
+	test -d build && rm -rf build/ || true
+	test -d readersender.egg-info && rm -rf readersender.egg-info || true
+	find . -type d -name "__pycache__" -mindepth 1 -exec rm -rf {} \; -prune
+	find . -type f -name "*.pyc" -exec rm {} \;
+	test -f .pipenv_installed && rm .pipenv_installed || true
+	test -f .pipenv_dev_installed && rm .pipenv_dev_installed || true
 
-dev-init:
-	pipenv install --dev
+.pipenv_installed:
+	pipenv install && touch .pipenv_installed
 
-setup: dev-init
-	pipenv run python setup.py sdist bdist_wheel
+.pipenv_dev_installed: 
+	pipenv install --dev && touch .pipenv_dev_installed
+
+install: .pipenv_installed
+
+dev-install: .pipenv_dev_installed
+
+snapshot: .pipenv_dev_installed
+	pipenv run python setup.py egg_info --tag-build=dev --tag-date sdist bdist_wheel bdist_egg
+
+dist: .pipenv_dev_installed
+	pipenv run python setup.py sdist bdist_wheel bdist_egg
 
 .PHONY: tests
-tests: dev-init
+tests: .pipenv_dev_installed
 	pipenv run python -m pytest 
 
 .PHONY: lint
-lint: dev-init
+lint: .pipenv_dev_installed
 	pipenv run python -m pytest --pep8 -m pep8

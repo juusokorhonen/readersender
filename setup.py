@@ -10,15 +10,15 @@ Setup script for the readersender module.
 import os
 import sys
 assert sys.version_info.major == 3
-import distutils
 import setuptools
+import pkg_resources
 
 
 def get_version(version_file='VERSION'):
 	"""Returns the current library version.
 	@return str -- Current semantical version.
 	"""
-	return ".".join([str(int(x)) for x in open(version_file, 'r').readline().strip().split('.')][:3])
+	return str(pkg_resources.parse_version(open(version_file, 'r').read().strip()))
 
 
 def get_short_description(readme_file='README.md'):
@@ -34,7 +34,7 @@ def get_long_description(readme_file='README.md'):
 	return "".join(open(readme_file, 'r').readlines()[2:])
 
 
-distutils.core.setup(
+setuptools.setup(
 	name="readersender",
 	description=get_short_description(),
 	long_description=get_long_description(),
@@ -42,7 +42,7 @@ distutils.core.setup(
 	version=get_version(),
 	author="Juuso Korhonen",
 	author_email="juusokorhonen on github.com",
-	url="https://github.com/juusokorhonen/readersender",
+	url="https://github.com/juusokorhonen/readersender/",
 	packages=setuptools.find_packages(),
 	classifiers=[
 		"Programming Language :: Python :: 3",
@@ -51,4 +51,11 @@ distutils.core.setup(
 		"Development Status :: 3 - Alpha",
 	],
 	python_requires='>=3.0',
+	install_requires=[
+
+	],
+	project_urls = {
+		"Source Code": "https://github.com/juusokorhonen/readersender/"
+	}
+
 	)
