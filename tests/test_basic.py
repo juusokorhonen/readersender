@@ -8,6 +8,7 @@ Unit tests using the pytest framework.
 @license:       MIT License
 """
 import sys
+import pytest
 
 
 # Test definitions
@@ -22,3 +23,25 @@ def test_readersender_import():
 	"""
 	from .context import readersender
 	
+
+def test_readersender():
+	"""Creates a readersender.
+	"""
+	from .context import readersender
+
+	with pytest.raises(TypeError):
+		readersender.ReaderSender()   # NOTE: Abstract class
+
+	with pytest.raises(TypeError):
+		readersender.Reader()
+
+	with pytest.raises(TypeError):
+		readersender.Sender()
+
+
+def test_fooreader():
+	"""Tests the FooReader class.
+	"""
+	from .context import readersender
+
+	fr = readersender.FooReader()
