@@ -61,7 +61,7 @@ class MQTTSender(Sender):
     def send(self, data):
         """
         Data to be sent.
-        \param[in]    data    - Energy data to send
+        @param[in]    data    - Energy data to send
         \remarks      Implement this in subclass. 
         """
         return

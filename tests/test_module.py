@@ -3,7 +3,7 @@
 """
 Unit tests using the pytest framework.
 
-@file           run_tests.py
+@file           test_module.py
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
@@ -17,3 +17,8 @@ def test_python_version():
     assert sys.version_info.major == 3
     
 
+def test_readersender_import():
+	"""Tests importing the readersender module.
+	"""
+	from .context import readersender
+	

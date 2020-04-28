@@ -19,8 +19,8 @@ class SimpleLogger(object):
     def __init__(self, logger, level):
       """
       Initializes a logger with a certain logging level.
-      \param[in]  logger  - A python logging instance 
-      \param[in]  level   - Logging level. See the 'logging' package for information.
+      @param[in]  logger  - A python logging instance 
+      @param[in]  level   - Logging level. See the 'logging' package for information.
       """
       # Initialize to given name or the current filename
       self.logger = logger 

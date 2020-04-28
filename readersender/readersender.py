@@ -71,7 +71,7 @@ class ReaderSender(object):
   def log_debug(self, msg):
     """
     Logs a debug message if debug_mode is set.
-    \param[in]    msg   - Message to to be logged
+    @param[in]    msg   - Message to to be logged
     """
     if (self.logger is not None):
       self.logger.debug(msg)
@@ -82,7 +82,7 @@ class ReaderSender(object):
   def log_info(self, msg):
     """
     Logs an info message to the console.
-    \param[in]    msg   - Message to be logged
+    @param[in]    msg   - Message to be logged
     """
     if (self.logger is not None):
       self.logger.info(msg)
@@ -93,7 +93,7 @@ class ReaderSender(object):
   def log_error(self, msg):
     """
     Logs an error to the console.
-    \param[in]    msg   - Message to be logged
+    @param[in]    msg   - Message to be logged
     """
     if (self.logger is not None):
       self.logger.error(msg)

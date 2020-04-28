@@ -34,7 +34,7 @@ class Sender(readersender.ReaderSender):
   def send(self, data):
     """
     Data to be sent.
-    \param[in]    data    - Energy data to send
+    @param[in]    data    - Energy data to send
     \remarks      Implement this in subclass. 
                   Raise RuntimeError if send failed.
                   No return value
