@@ -7,7 +7,7 @@ Run some tests to see that everything is working.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
-from __future__ import (absolute_import, division, unicode_literals, print_function)
+
 import sys
 import time
 import signal
