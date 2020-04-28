@@ -18,14 +18,15 @@ def test_python_version():
     assert sys.version_info.major == 3
     
 
-def test_readersender_import():
-	"""Tests importing the readersender module.
+def test_imports():
+	"""Tests importing the modules.
 	"""
 	from .context import readersender
+	from .context import logger
 	
 
 def test_readersender():
-	"""Creates a readersender.
+	"""Tests readersender creation.
 	"""
 	from .context import readersender
 
@@ -44,4 +45,20 @@ def test_fooreader():
 	"""
 	from .context import readersender
 
+	fr = readersender.readers.FooReader()
 	fr = readersender.FooReader()
+
+	fr.connect()
+
+
+
+def test_foosender():
+	"""Tests the FooSender class.
+	"""
+	from .context import readersender
+
+	fs = readersender.senders.FooSender()
+	fs = readersender.FooSender()
+
+
+

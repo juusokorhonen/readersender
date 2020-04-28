@@ -19,8 +19,10 @@ class FooReader(Reader):
     self.log_debug("Connecting to foo")
     return True
 
+
   def disconnect(self):
     self.log_debug("Disconnecting from foo")
+
 
   def read(self):
     data = "foo"

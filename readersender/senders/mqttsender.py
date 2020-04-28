@@ -7,28 +7,37 @@ MQTTSender class.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
-import paho.mqtt.client as mqtt
+import sys
+try:
+    import paho.mqtt.client as mqtt
+except ModuleNotFoundError as e:
+    import warnings
+    warnings.warn("'paho.mqtt.client' not found. MQTT functionality disabled.", ImportWarning)
+    mqtt = None
 
 from ..sender import Sender
 
 class MQTTSender(Sender):
-    def __init__(self, config, *args, **kwargs):      
+    def __init__(self, config=None, *args, **kwargs):      
         """      
         Initializes a new MQTTSender object. After
         initialization, you can set eg. debug_mode, silent_mode, and log_format
         parameter.   
         """         
-        super(Sender, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # Any custom initialization goes here or to subclasses
         self.config = {
             'host': 'localhost',
             'port': 1883,
             'keepalive': 60,
-            'bind_adderss': ''
+            'bind_address': '',
+            'sync': False
         }
-        self.config.update(config)
+        if config is not None:
+            self.config.update(config)
         self.connected = False
-        self.client = mqtt.Client()
+        self.client = mqtt.Client() if (mqtt is not None) else None
+
 
     def connect(self):
         """
@@ -40,12 +49,15 @@ class MQTTSender(Sender):
         if not self.connected:
             try:
                 self.client.on_connect = self.on_connect
-                self.client.connect(self.config.get('host'), 
+                conn_fun = self.client.connect if self.config.sync else self.client.connect_async
+                conn_fun(
+                    self.config.get('host'), 
                     self.config.get('port'), 
                     self.config.get('keepalive'), 
-                    self.config.get('bind_adderss'))
+                    self.config.get('bind_address'))
             except ConnectionRefusedError as e:
                 raise RuntimeError("Connection refused: {}".format(e))
+
 
     def on_connect(self):
         """
@@ -53,13 +65,26 @@ class MQTTSender(Sender):
         """
         self.connected = True
 
+
+    def disconnect(self):
+        """Disconnects the mqtt instance.
+        """
+        if not self.client:
+            raise RuntimeError("Client is not initialized")
+
+        if self.connected:
+            self.client.on_disconnect = self.on_disconnect
+            self.client.disconnect()
+
+
     def on_disconnect(self):
         self.connected = False
+
 
     def send(self, data):
         """
         Data to be sent.
-        @param[in]    data    - Energy data to send
-        \remarks      Implement this in subclass. 
+        @param[in]    data - String-like data to send
+        @remarks      Functionality not implemented
         """
         return
