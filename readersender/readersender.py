@@ -4,11 +4,9 @@
 ReaderSender abstract base class for readers and senders.
 
 @file           readersender.py
-@author:        Juuso Korhonen (jk.lic at_server fw.turqoosi.net)
+@author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
-from __future__ import (absolute_import, division, unicode_literals, print_function)
-
 import sys
 import abc
 import logging
