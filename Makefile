@@ -11,10 +11,13 @@ init:
 dev-init:
 	pipenv install --dev
 
+setup: dev-init
+	pipenv run python setup.py sdist bdist_wheel
+
 .PHONY: tests
-tests:
+tests: dev-init
 	pipenv run python -m pytest 
 
 .PHONY: lint
-lint:
+lint: dev-init
 	pipenv run python -m pytest --pep8 -m pep8

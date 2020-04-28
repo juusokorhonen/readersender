@@ -6,6 +6,9 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 pytest-pep8 = "*"
+setuptools = "*"
+wheel = "*"
+twine = "*"
 
 [packages]
 
