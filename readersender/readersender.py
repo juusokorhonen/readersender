@@ -7,56 +7,58 @@ ReaderSender abstract base class for readers and senders.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
-import sys
 import abc
 import logging
 import logging.handlers
 
+
 class ReaderSender(object, metaclass=abc.ABCMeta):
-  """
-  An abstract class that takes care of some basic functionality and interfaces.
-  @version  1.0
-  """
-  def __init__(self, logger=None, loglevel=logging.INFO):      
-    """      
-    Initializes a new ReaderSender object. After
-    initialization, you can set eg. debug_mode, silent_mode, and log_format
-    parameter.   
-    """         
-    self._logger = logger or logging.getLogger(__name__)
-    self._loglevel = loglevel
-
-
-  @property
-  def logger(self):
-    return self._logger
-
-
-  @logger.setter
-  def logger(self, logger):
-    self._logger = logger
-    self._logger.setLevel(self._loglevel)
-  
-
-  @abc.abstractmethod
-  def connect(self):
+    """An abstract ReaderSender class.
+    Takes care of some basic functionality and interfaces.
+    @version  1.0
     """
-    Connect to reader/sender. Usually called after init.
-    """  
-    return
+    def __init__(self, logger=None, loglevel=logging.INFO):
+        """Initializes a new ReaderSender object.
+        After initialization, you can set eg. debug_mode, silent_mode, and log_format
+        parameter.
+        """
+        self._loggers = [logger or logging.getLogger(__name__)]
+        self._loggers[0].setLevel(loglevel)
 
+    @property
+    def logger(self):
+        """Returns the default logger.
+        """
+        return self._loggers[0]
 
-  @abc.abstractmethod
-  def disconnect(self):
-    """
-    Disconnect from the server.
-    """
-    return
+    @logger.setter
+    def logger(self, logger):
+        """Replaces the default logger.
+        """
+        if logger is not None:
+            self._loggers[0] = logger
 
+    @property
+    def loggers(self):
+        """Returns a list of all registered loggers.
+        """
+        return self._loggers
 
-  def log(self, msg, loglevel):
-    """
-    Log msg with given loglevel.
-    """   
-    self.logger.log(loglevel, msg)
-  
+    @abc.abstractmethod
+    def connect(self):
+        """Connects a reader/sender to source/target.
+        Usually called after init.
+        """
+        return
+
+    @abc.abstractmethod
+    def disconnect(self):
+        """Disconnects from the server.
+        """
+        return
+
+    def log(self, msg, loglevel):
+        """Logs to all loggers a msg with given loglevel.
+        """
+        for logger in self.loggers:
+            logger.log(loglevel, msg)

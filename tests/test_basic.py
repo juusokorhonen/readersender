@@ -48,7 +48,8 @@ def test_fooreader():
 	fr = readersender.FooReader()
 
 	fr.connect()
-
+	fr.read()
+	fr.disconnect()
 
 
 def test_foosender():
@@ -59,6 +60,9 @@ def test_foosender():
 	fs = readersender.senders.FooSender()
 	fs = readersender.FooSender()
 
+	fs.connect()
+	fs.send("testdata")
+	fs.disconnect()
 
 
 def test_randomreader():
@@ -68,5 +72,9 @@ def test_randomreader():
 
 	rr = readersender.readers.RandomReader()
 	rr = readersender.RandomReader()
+
+	rr.connect()
+	rr.read()
+	rr.disconnect()
 
 

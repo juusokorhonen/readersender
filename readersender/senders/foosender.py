@@ -16,13 +16,13 @@ class FooSender(Sender):
   @version 1.0
   """
   def connect(self):
-    self.log_debug("Connecting to foo")
+    self.log("Connecting to foo", logging.INFO)
     return True
 
 
   def disconnect(self):
-    self.log_debug("Disconnecting from foo")
+    self.log("Disconnecting from foo", logging.INFO)
 
 
   def send(self, data):
-    self.log_debug("Sending (not really) data: {}".format(data))
+    self.log("Sending (not really) data: {}".format(data), logging.INFO)

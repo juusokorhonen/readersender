@@ -5,10 +5,11 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
-pytest-pep8 = "*"
+pytest-pycodestyle = "*"
 setuptools = "*"
 wheel = "*"
 twine = "*"
+flake8 = "*"
 
 [packages]
 

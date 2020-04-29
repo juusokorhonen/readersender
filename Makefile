@@ -37,4 +37,8 @@ tests: .pipenv_dev_installed
 
 .PHONY: lint
 lint: .pipenv_dev_installed
-	pipenv run python -m pytest --pep8 -m pep8
+	pipenv run python -m pytest --pycodestyle -m pycodestyle --ignore=E501
+
+.PHONY: codestyle
+codestyle: .pipenv_dev_installed
+	pipenv run python -m flake8 --ignore=E501
