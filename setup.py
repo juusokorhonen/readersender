@@ -44,6 +44,7 @@ setuptools.setup(
     author_email="juusokorhonen on github.com",
     url="https://github.com/juusokorhonen/readersender/",
     packages=setuptools.find_packages(),
+    include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
@@ -52,7 +53,9 @@ setuptools.setup(
     ],
     python_requires='>=3.0',
     install_requires=[
-
+        "setuptools",
+        "wheel",
+        "twine"
     ],
     project_urls={
         "Source Code": "https://github.com/juusokorhonen/readersender/"

@@ -23,4 +23,4 @@ class Sender(ReaderSender):
                       Raise RuntimeError if send failed.
                       No return value
         """
-        return
+        pass
