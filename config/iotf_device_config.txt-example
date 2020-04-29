@@ -1,6 +1,0 @@
-[device]
-org=$orgId
-type=$myDeviceType
-id=$myDeviceId
-auth-method=token
-auth-token=$token
