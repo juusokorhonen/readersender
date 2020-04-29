@@ -75,7 +75,7 @@ class SchemeReader(Reader):
             return data
         else:
             try:
-                val = scheme()
+                val = scheme.__call__()
                 return val
             except TypeError:
                 raise AttributeError("Cannot process scheme for '{}'.".format(str(scheme)))
