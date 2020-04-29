@@ -16,65 +16,60 @@ def test_python_version():
     """Tests for proper python version.
     """
     assert sys.version_info.major == 3
-    
+
 
 def test_imports():
-	"""Tests importing the modules.
-	"""
-	from .context import readersender
-	
+    """Tests importing the modules.
+    """
+    from .context import readersender   # noqa: F401
+
 
 def test_readersender():
-	"""Tests readersender creation.
-	"""
-	from .context import readersender
+    """Tests readersender creation.
+    """
+    from .context import readersender
 
-	with pytest.raises(TypeError):
-		readersender.ReaderSender()   # NOTE: Abstract class
+    with pytest.raises(TypeError):
+        readersender.ReaderSender()   # NOTE: Abstract class
 
-	with pytest.raises(TypeError):
-		readersender.Reader()
+    with pytest.raises(TypeError):
+        readersender.Reader()
 
-	with pytest.raises(TypeError):
-		readersender.Sender()
+    with pytest.raises(TypeError):
+        readersender.Sender()
 
 
 def test_fooreader():
-	"""Tests the FooReader class.
-	"""
-	from .context import readersender
+    """Tests the FooReader class.
+    """
+    from .context import readersender
 
-	fr = readersender.readers.FooReader()
-	fr = readersender.FooReader()
+    fr = readersender.readers.FooReader()
 
-	fr.connect()
-	fr.read()
-	fr.disconnect()
+    fr.connect()
+    fr.read()
+    fr.disconnect()
 
 
 def test_foosender():
-	"""Tests the FooSender class.
-	"""
-	from .context import readersender
+    """Tests the FooSender class.
+    """
+    from .context import readersender
 
-	fs = readersender.senders.FooSender()
-	fs = readersender.FooSender()
+    fs = readersender.senders.FooSender()
 
-	fs.connect()
-	fs.send("testdata")
-	fs.disconnect()
+    fs.connect()
+    fs.send("testdata")
+    fs.disconnect()
 
 
 def test_randomreader():
-	"""Tests the RandomReader class.
-	"""
-	from .context import readersender
+    """Tests the RandomReader class.
+    """
+    from .context import readersender
 
-	rr = readersender.readers.RandomReader()
-	rr = readersender.RandomReader()
+    rr = readersender.readers.RandomReader()
 
-	rr.connect()
-	rr.read()
-	rr.disconnect()
-
-
+    rr.connect()
+    rr.read()
+    rr.disconnect()

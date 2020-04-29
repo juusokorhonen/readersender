@@ -37,7 +37,7 @@ tests: .pipenv_dev_installed
 
 .PHONY: lint
 lint: .pipenv_dev_installed
-	pipenv run python -m pytest --pycodestyle -m pycodestyle --ignore=E501
+	pipenv run python -m pytest --pycodestyle
 
 .PHONY: codestyle
 codestyle: .pipenv_dev_installed

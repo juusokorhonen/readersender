@@ -3,3 +3,9 @@
 
 from .foosender import FooSender
 from .mqttsender import MQTTSender
+
+
+__all__ = [
+    'FooSender',
+    'MQTTSender'
+]

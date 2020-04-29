@@ -7,22 +7,20 @@ Foo sender for testing.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
+import logging
 from ..sender import Sender
 
 
 class FooSender(Sender):
-  """
-  A foo sender class that does nothing.
-  @version 1.0
-  """
-  def connect(self):
-    self.log("Connecting to foo", logging.INFO)
-    return True
+    """A sender class that does nothing.
+    @version 1.0
+    """
+    def connect(self):
+        self.log("Connecting to foo", logging.INFO)
+        return True
 
+    def disconnect(self):
+        self.log("Disconnecting from foo", logging.INFO)
 
-  def disconnect(self):
-    self.log("Disconnecting from foo", logging.INFO)
-
-
-  def send(self, data):
-    self.log("Sending (not really) data: {}".format(data), logging.INFO)
+    def send(self, data):
+        self.log("Sending (not really) data: {}".format(data), logging.INFO)

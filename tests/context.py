@@ -10,5 +10,9 @@ Unit tests using the pytest framework.
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../readersender/'))
+import readersender    # noqa: E402
 
-import readersender
+
+__all__ = [
+    'readersender'
+]
