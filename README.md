@@ -20,7 +20,3 @@ Class hierarchy
   	* FooSender(Sender)
 
   	* MQTTSender(Sender)
-
-  	* IOTFSender(Sender)
-
-  	* IOTFDeviceSender(Sender)
