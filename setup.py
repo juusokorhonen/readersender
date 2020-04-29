@@ -53,7 +53,9 @@ setuptools.setup(
     ],
     python_requires='>=3.0',
     install_requires=[
-
+        "setuptools",
+        "wheel",
+        "twine"
     ],
     project_urls={
         "Source Code": "https://github.com/juusokorhonen/readersender/"
