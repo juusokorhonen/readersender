@@ -41,4 +41,4 @@ lint: .pipenv_dev_installed
 
 .PHONY: codestyle
 codestyle: .pipenv_dev_installed
-	pipenv run python -m flake8 --ignore=E501
+	pipenv run python -m flake8
