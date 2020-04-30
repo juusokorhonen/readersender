@@ -26,23 +26,29 @@ class SchemeReader(Reader):
 
     def connect(self):
         if self._connected:
-            self.log("Already connected. Skipping.", logging.INFO)
+            self.log("{} already connected. Skipping.".format(self.__class__.__name__),
+                     logging.INFO)
             return
-        self.log("Connecting to random reader", logging.INFO)
+        self.log("Connecting to {}.".format(self.__class__.__name__),
+                 logging.INFO)
         self._connected = True
 
     def disconnect(self):
         if not self._connected:
-            self.log("Already disconnected. Skipping.", logging.INFO)
+            self.log("{} already disconnected. Skipping.".format(self.__class__.__name__),
+                     logging.INFO)
             return
-        self.log("Disconnecting from random reader", logging.INFO)
+        self.log("Disconnecting from {}.".format(self.__class__.__name__),
+                 logging.INFO)
         self._connected = False
 
     def read(self):
         if not self._connected:
             raise RuntimeError("{} not connected.".format(self.__class__.__name__))
         data = self._process_scheme(self.scheme)
-        self.log("Read random data: {}".format(json.dumps(data)), logging.DEBUG)
+        self.log("{} reading data.".format(self.__class__.__name__), logging.INFO)
+        self.log("{} read random data: {}".format(json.dumps(data), self.__class__.__name__),
+                 logging.DEBUG)
         return data
 
     @property

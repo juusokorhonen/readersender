@@ -7,7 +7,7 @@ Reader-sender model test app.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
-
+import os
 import sys
 import time
 import signal
@@ -16,6 +16,7 @@ import traceback
 import logging
 import logging.handlers
 import importlib
+sys.path.insert(0, os.path.abspath('../readersender/'))
 
 
 def main_loop(readername, sendername,
@@ -28,64 +29,56 @@ def main_loop(readername, sendername,
     logger.debug("Initializing a reader")
     rmodname = readername.lower() + "reader"
     try:
-        readermodule = importlib.import_module(rmodname)
+        readermodule = importlib.import_module("." + rmodname, package='readersender.readers')
     except ImportError as e:
-        logger.error("Could not import module: {}".format(rmodname))
-        logger.exception("Exception : {}".format(e))
+        logger.error("Could not import module: {}. Message: '{}'.".format(rmodname, e))
         sys.exit(1)
 
     rclassname = readername[0].upper() + readername[1:] + "Reader"
     try:
         Reader = getattr(readermodule, rclassname)
         reader = Reader(logger=logger, loglevel=loglevel, **readerargs.get('init'))
-    except AttributeError as e:
-        logger.error("Could not create reader class: {}".format(rclassname))
-        logger.exception("Exception : {}".format(e))
+    except Exception as e:
+        logger.error("Could not create reader class: {}. Message: '{}'.".format(rclassname, e))
         sys.exit(1)
 
     # Try connection to reader
     logger.debug("Connecting to reader")
     try:
         reader.connect()
-        reader.disconnect()
-    except RuntimeError as e:
-        logger.error("Connection to reader failed")
-        logger.exception("Exception : {}".format(e))
+    except Exception as e:
+        logger.error("Connection to reader failed. Message: '{}'.".format(e))
         sys.exit(1)
 
     # Set up sender
     logger.debug("Initializing a sender")
     smodname = sendername.lower() + "sender"
     try:
-        sendermodule = importlib.import_module(smodname)
+        sendermodule = importlib.import_module("." + smodname, 'readersender.senders')
     except ImportError as e:
-        logger.error("Could not import module: {}".format(smodname))
-        logger.exception("Exception : {}".format(e))
+        logger.error("Could not import module: {}. Message: '{}'.".format(smodname, e))
         sys.exit(1)
 
     sclassname = sendername[0].upper() + sendername[1:] + "Sender"
     try:
         Sender = getattr(sendermodule, sclassname)
         sender = Sender(logger=logger, loglevel=loglevel, **senderargs.get('init'))
-    except AttributeError as e:
-        logger.error("Could not create sender class: {}".format(sclassname))
-        logger.exception("Exception : {}".format(e))
+    except Exception as e:
+        logger.error("Could not create sender class: {}. Message: '{}'.".format(sclassname, e))
         sys.exit(1)
 
     logger.debug("Testing connection to sender")
     try:
         sender.connect()
-        sender.disconnect()
     except RuntimeError as e:
-        logger.error("Connection to sender failed")
-        logger.exception("Exception : {}".format(e))
+        logger.error("Connection to sender failed. Message: '{}'.".format(e))
         sys.exit(1)
 
     # Auxillary functions
     def read_data(disconnect_after_read=True, **kwargs):
         # Connect to the reader
-        if not reader.connect():
-            raise RuntimeError('Connection reader failed.')
+        if not reader.connected:
+            reader.connect()
 
         # Read data
         data = reader.read(**kwargs)
@@ -98,7 +91,8 @@ def main_loop(readername, sendername,
 
     def send_data(data, disconnect_after_send=True, **kwargs):
         # Connect to the sender
-        sender.connect()
+        if not sender.connected:
+            sender.connect()
 
         # Send data
         sender.send(data, **kwargs)   # NOTE: Dismisses result
@@ -133,14 +127,17 @@ def main_loop(readername, sendername,
         logger.debug(traceback.format_exc())
 
 
-if __name__ == '__main__':
+def interval_readersender():
+    """Sets up a reader and a sender that pass data each interval.
+    @notes Reads command line arguments.
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('reader', help="reader class to use")
     parser.add_argument('sender', help="sender class to use")
     parser.add_argument('interval', help="run interval in seconds", type=int)
     parser.add_argument('--debug', help="run in debug mode (default: no)",
                         action='store_true')
-    parser.add_argument('--stdout', help="direcot logs to stdout (default: no)",
+    parser.add_argument('--stdout', help="direct logs to stdout (default: no)",
                         action='store_true')
     args = parser.parse_args()
 
@@ -152,9 +149,7 @@ if __name__ == '__main__':
     }
     sender = args.sender
     senderargs = {
-        'init': {
-            'config': {},
-        },
+        'init': {},
         'send': {},
         'disconnect_after_send': False,
     }
@@ -176,7 +171,7 @@ if __name__ == '__main__':
         handler = logging.StreamHandler()
 
     # Format for the logs
-    formatter = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
+    formatter = logging.Formatter('%(asctime)s [%(name)s] %(levelname)-8s %(message)s')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
@@ -219,3 +214,7 @@ if __name__ == '__main__':
 
     logger.error("Anomalously exiting main thread.")
     sys.exit(1)
+
+
+if __name__ == '__main__':
+    interval_readersender()

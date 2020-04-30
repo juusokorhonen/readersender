@@ -35,29 +35,6 @@ def get_long_description(readme_file='README.md'):
 
 
 setuptools.setup(
-    name="readersender",
-    description=get_short_description(),
-    long_description=get_long_description(),
     long_description_content_type="text/markdown",
-    version=get_version(),
-    author="Juuso Korhonen",
-    author_email="juusokorhonen on github.com",
-    url="https://github.com/juusokorhonen/readersender/",
-    packages=setuptools.find_packages(),
-    include_package_data=True,
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-        "Development Status :: 3 - Alpha",
-    ],
-    python_requires='>=3.0',
-    install_requires=[
-        "setuptools",
-        "wheel",
-        "twine"
-    ],
-    project_urls={
-        "Source Code": "https://github.com/juusokorhonen/readersender/"
-    }
+    version=get_version()
 )

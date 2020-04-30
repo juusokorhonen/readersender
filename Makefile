@@ -9,7 +9,7 @@ nothing:
 clean:
 	test -d dist && rm -rf dist/ || true
 	test -d build && rm -rf build/ || true
-	test -d readersender.egg-info && rm -rf readersender.egg-info || true
+	test -d src/readersender.egg-info && rm -rf src/readersender.egg-info || true
 	find . -type d -name "__pycache__" -mindepth 1 -exec rm -rf {} \; -prune
 	find . -type f -name "*.pyc" -exec rm {} \;
 	test -f .pipenv_installed && rm .pipenv_installed || true
@@ -25,8 +25,15 @@ install: .pipenv_installed
 
 dev-install: .pipenv_dev_installed
 
+snapshot-version: src/readersender.egg-info/PKG-INFO
+	grep "^Version:" src/readersender.egg-info/PKG-INFO | sed 's/^Version: //' > SNAPSHOT 
+
 snapshot: .pipenv_dev_installed
-	pipenv run python setup.py egg_info --tag-build=dev --tag-date sdist bdist_wheel bdist_egg
+	pipenv run python setup.py egg_info --tag-build=dev --tag-date sdist bdist_wheel bdist_egg && \
+		$(MAKE) snapshot-version 
+
+snapshot-tag: SNAPSHOT
+	git tag -a "v`cat SNAPSHOT`" -m "Snapshot v`cat SNAPSHOT`" 
 
 dist: .pipenv_dev_installed
 	pipenv run python setup.py sdist bdist_wheel bdist_egg
