@@ -25,17 +25,15 @@ install: .pipenv_installed
 
 dev-install: .pipenv_dev_installed
 
-snapshot-version:
-	test -f src/readersender.egg-info/PKG-INFO && \
-		grep "^Version:" src/readersender.egg-info/PKG-INFO | sed 's/^Version: //' > SNAPSHOT 
+snapshot-version: src/readersender.egg-info/PKG-INFO
+	grep "^Version:" src/readersender.egg-info/PKG-INFO | sed 's/^Version: //' > SNAPSHOT 
 
 snapshot: .pipenv_dev_installed
 	pipenv run python setup.py egg_info --tag-build=dev --tag-date sdist bdist_wheel bdist_egg && \
 		$(MAKE) snapshot-version 
 
-snapshot-tag: 
-	$(MAKE) snapshot-version && \
-		git tag -a "v$(cat SNAPSHOT)" -m "Automatic snapshot v$(cat SNAPSHOT)" 
+snapshot-tag: SNAPSHOT
+	git tag -a "v`cat SNAPSHOT`" -m "Snapshot v`cat SNAPSHOT`" 
 
 dist: .pipenv_dev_installed
 	pipenv run python setup.py sdist bdist_wheel bdist_egg
