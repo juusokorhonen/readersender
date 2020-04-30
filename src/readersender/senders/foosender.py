@@ -18,16 +18,16 @@ class FooSender(Sender):
     """
     def connect(self):
         if self._connected:
-            self.log("Already connected. Skipping.", logging.INFO)
+            self.log("{} already connected. Skipping.".format(self.__class__.__name__), logging.INFO)
             return
-        self.log("Connecting to foo", logging.INFO)
+        self.log("Connecting {}.".format(self.__class__.__name__), logging.INFO)
         self._connected = True
 
     def disconnect(self):
         if not self._connected:
-            self.log("Already disconnected. Skipping.", logging.INFO)
+            self.log("{} already disconnected. Skipping.".format(self.__class__.__name__), logging.INFO)
             return
-        self.log("Disconnecting from foo", logging.INFO)
+        self.log("Disconnecting {}.".format(self.__class__.__name__), logging.INFO)
         self._connected = False
 
     def send(self, data):
@@ -35,5 +35,5 @@ class FooSender(Sender):
         """
         if not self._connected:
             raise RuntimeError("{} not connected.".format(self.__class__.__name__))
-        self.log("Sending (not really) data: {}".format(data), logging.INFO)
-        sys.stdout.write(data)
+        self.log("{} sending data.".format(self.__class__.__name__), logging.INFO)
+        sys.stdout.write(str(data) + "\n")

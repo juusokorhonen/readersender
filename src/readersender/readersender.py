@@ -22,7 +22,7 @@ class ReaderSender(object, metaclass=abc.ABCMeta):
         After initialization, you can set eg. debug_mode, silent_mode, and log_format
         parameter.
         """
-        self._loggers = [logger or logging.getLogger(__class__.__name__)]
+        self._loggers = [logger.getChild(__class__.__name__) or logging.getLogger(__class__.__name__)]
         self._loggers[0].setLevel(loglevel)
 
         self._connected = False
@@ -67,4 +67,4 @@ class ReaderSender(object, metaclass=abc.ABCMeta):
         """Logs to all loggers a msg with given loglevel.
         """
         for logger in self.loggers:
-            logger.log(loglevel, msg)
+            logger.log(loglevel, "{}".format(msg))

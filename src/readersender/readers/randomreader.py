@@ -29,7 +29,11 @@ class RandomReader(Reader):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.scheme_reader = SchemeReader(self.random_scheme)
+        self.scheme_reader = SchemeReader(scheme=self.random_scheme, *args, **kwargs)
+
+    @property
+    def connected(self):
+        return self.scheme_reader.connected
 
     def connect(self):
         self.scheme_reader.connect()
