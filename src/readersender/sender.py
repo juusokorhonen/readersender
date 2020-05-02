@@ -7,15 +7,15 @@ Sender classes.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
-import abc
 from . import ReaderSender
+from .helpers import only_connected
 
 
 class Sender(ReaderSender):
     """An abstract class that takes care of data processing and sending.
     @version 1.3
     """
-    @abc.abstractmethod
+    @only_connected(action='warn')
     def send(self, data):
         """Send data.
         @param[in]    data    - Data to send

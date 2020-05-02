@@ -7,6 +7,7 @@ from .sender import Sender
 from . import readers
 from . import senders
 from . import tools
+from . import helpers
 
 
 __all__ = [
@@ -15,5 +16,6 @@ __all__ = [
     'Sender',
     'readers',
     'senders',
-    'tools'
+    'tools',
+    'helpers'
 ]

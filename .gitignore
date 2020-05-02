@@ -140,4 +140,4 @@ cython_debug/
 # Project-specific practices
 .pipenv_installed
 .pipenv_dev_installed
-
+SNAPSHOT

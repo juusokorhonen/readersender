@@ -10,6 +10,7 @@ ReaderSender abstract base class for readers and senders.
 import abc
 import logging
 import logging.handlers
+from .helpers import only_connected, only_disconnected
 
 
 class ReaderSender(object, metaclass=abc.ABCMeta):
@@ -22,7 +23,8 @@ class ReaderSender(object, metaclass=abc.ABCMeta):
         After initialization, you can set eg. debug_mode, silent_mode, and log_format
         parameter.
         """
-        self._loggers = [logger.getChild(__class__.__name__) or logging.getLogger(__class__.__name__)]
+        self._loggers = [logger.getChild(__class__.__name__) if logger is not None 
+                         else logging.getLogger(__class__.__name__)]
         self._loggers[0].setLevel(loglevel)
 
         self._connected = False
@@ -50,18 +52,18 @@ class ReaderSender(object, metaclass=abc.ABCMeta):
     def connected(self):
         return self._connected
 
-    @abc.abstractmethod
+    @only_disconnected(action='pass')
     def connect(self):
         """Connects a reader/sender to source/target.
         Usually called after init.
         """
-        pass
+        self._connected = True
 
-    @abc.abstractmethod
+    @only_connected(action='pass')
     def disconnect(self):
         """Disconnects from the server.
         """
-        pass
+        self._connected = False
 
     def log(self, msg, loglevel):
         """Logs to all loggers a msg with given loglevel.

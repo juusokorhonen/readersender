@@ -7,8 +7,8 @@ Reader classes.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
-import abc
 from . import ReaderSender
+from .helpers import only_connected
 
 
 class Reader(ReaderSender):
@@ -16,10 +16,10 @@ class Reader(ReaderSender):
     Defines methods to be implemented in subclasses.
     @version 1.4
     """
-    @abc.abstractmethod
+    @only_connected(action='warn')
     def read(self):
         """Reads data from the reader.
         Subclasses should implement their own methods with optional arguments.
         @returns Read data
         """
-        return None
+        return NotImplemented
