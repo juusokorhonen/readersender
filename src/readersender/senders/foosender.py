@@ -18,14 +18,16 @@ class FooSender(Sender):
     """
     def connect(self):
         if self._connected:
-            self.log("{} already connected. Skipping.".format(self.__class__.__name__), logging.INFO)
+            self.log("{} already connected. Skipping.".
+                     format(self.__class__.__name__), logging.INFO)
             return
         self.log("Connecting {}.".format(self.__class__.__name__), logging.INFO)
         self._connected = True
 
     def disconnect(self):
         if not self._connected:
-            self.log("{} already disconnected. Skipping.".format(self.__class__.__name__), logging.INFO)
+            self.log("{} already disconnected. Skipping.".
+                     format(self.__class__.__name__), logging.INFO)
             return
         self.log("Disconnecting {}.".format(self.__class__.__name__), logging.INFO)
         self._connected = False

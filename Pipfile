@@ -12,6 +12,7 @@ twine = "*"
 flake8 = "*"
 
 [packages]
+pyserial = "*"
 
 [requires]
 python_version = "3.8"

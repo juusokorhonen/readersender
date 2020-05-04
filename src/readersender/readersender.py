@@ -8,6 +8,7 @@ ReaderSender abstract base class for readers and senders.
 @license:       MIT License
 """
 import abc
+import sys
 import logging
 import logging.handlers
 from .helpers import only_connected, only_disconnected
@@ -23,8 +24,11 @@ class ReaderSender(object, metaclass=abc.ABCMeta):
         After initialization, you can set eg. debug_mode, silent_mode, and log_format
         parameter.
         """
-        self._loggers = [logger.getChild(__class__.__name__) if logger is not None 
-                         else logging.getLogger(__class__.__name__)]
+        if logger is not None:
+            self._loggers = [logger.getChild(__class__.__name__)]
+        else:
+            self._loggers = [logging.getLogger(__class__.__name__)]
+            self._loggers[0].addHandler(logging.StreamHandler(sys.stdout))
         self._loggers[0].setLevel(loglevel)
 
         self._connected = False
@@ -70,3 +74,25 @@ class ReaderSender(object, metaclass=abc.ABCMeta):
         """
         for logger in self.loggers:
             logger.log(loglevel, "{}".format(msg))
+
+    # Context Manager implementation
+    def __enter__(self):
+        """Initializes the context by opening the connection.
+
+        Notes
+        -----
+        Usage example:
+            with ReaderSender() as rs:
+                rs.connect()
+                if rs.connected:
+                    print("Connected.")
+        """
+        self.connect()
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Takes care of closing connections automatically.
+        """
+        if self.connected:
+            self.disconnect()
+        return True

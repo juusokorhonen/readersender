@@ -15,36 +15,41 @@ except ModuleNotFoundError:
                   ImportWarning)
     mqtt = None
 from ..sender import Sender
+from ..helpers import (only_connected, only_disconnected)
 
 
-class MQTTSender(Sender):
-    def __init__(self, config=None, *args, **kwargs):
-        """Initializes a new MQTTSender.
-        """
-        super().__init__(*args, **kwargs)
-        # Any custom initialization goes here or to subclasses
-        self.config = {
-            'host': 'localhost',
-            'port': 1883,
-            'keepalive': 60,
-            'bind_address': '',
-            'sync': False
-        }
-        if config is not None:
-            self.config.update(config)
-        self.connected = False
-        self.client = mqtt.Client() if (mqtt is not None) else None
+if mqtt is not None:
+    MQTT_DEFAULT_CONFIG = {
+        'host': 'localhost',
+        'port': 1883,
+        'keepalive': 60,
+        'bind_address': '',
+        'sync': False
+    }
 
-    def connect(self):
-        """Connects to the MQTT instance.
-        """
-        if not self.client:
-            raise RuntimeError("Client is not initialized")
+    class MQTTSender(Sender):
+        def __init__(self, config=None, *args, **kwargs):
+            """Initializes a new MQTTSender.
+            """
+            super().__init__(*args, **kwargs)
+            # Any custom initialization goes here or to subclasses
+            self.config = self.MQTT_DEFAULT_CONFIG.copy()
+            if config is not None:
+                self.config.update(config)
+            self.connected = False
+            self.client = mqtt.Client()
 
-        if not self.connected:
+        @only_disconnected
+        def connect(self):
+            """Connects to the MQTT instance.
+            """
+            if not self.client:
+                raise RuntimeError("Client is not initialized")
+
             try:
                 self.client.on_connect = self.on_connect
-                conn_fun = self.client.connect if self.config.sync else self.client.connect_async
+                conn_fun = self.client.connect if self.config.sync \
+                    else self.client.connect_async
                 conn_fun(
                     self.config.get('host'),
                     self.config.get('port'),
@@ -53,28 +58,30 @@ class MQTTSender(Sender):
             except ConnectionRefusedError as e:
                 raise RuntimeError("Connection refused: {}".format(e))
 
-    def on_connect(self):
-        """This method is called when successfully connected to client.
-        """
-        self.connected = True
+        def on_connect(self):
+            """This method is called when successfully connected to client.
+            """
+            self.connected = True
 
-    def disconnect(self):
-        """Disconnects the MQTT instance.
-        """
-        if not self.client:
-            raise RuntimeError("Client is not initialized")
+        @only_connected
+        def disconnect(self):
+            """Disconnects the MQTT instance.
+            """
+            if not self.client:
+                raise RuntimeError("Client is not initialized")
 
-        if self.connected:
-            self.client.on_disconnect = self.on_disconnect
-            self.client.disconnect()
+            if self.connected:
+                self.client.on_disconnect = self.on_disconnect
+                self.client.disconnect()
 
-    def on_disconnect(self):
-        self.connected = False
+        def on_disconnect(self):
+            self.connected = False
 
-    def send(self, data):
-        """
-        Data to be sent.
-        @param[in]    data - String-like data to send
-        @remarks      Functionality not implemented
-        """
-        return
+        @only_connected(action='warn')
+        def send(self, data):
+            """
+            Data to be sent.
+            @param[in]    data - String-like data to send
+            @remarks      Functionality not implemented
+            """
+            return

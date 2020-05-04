@@ -13,6 +13,7 @@ import time
 import signal
 import argparse
 import traceback
+import json
 import logging
 import logging.handlers
 import importlib
@@ -139,6 +140,18 @@ def interval_readersender():
                         action='store_true')
     parser.add_argument('--stdout', help="direct logs to stdout (default: no)",
                         action='store_true')
+    parser.add_argument('--reader_init_args', 
+                        help="Additional key-value arguments for reader initialization", 
+                        type=json.loads)
+    parser.add_argument('--read_args', 
+                        help="Additional key-value arguments for read command", 
+                        type=json.loads)
+    parser.add_argument('--sender_init_args', 
+                        help="Additional key-value arguments for sender initialization", 
+                        type=json.loads)
+    parser.add_argument('--send_args', 
+                        help="Additional key-value arguments for send command", 
+                        type=json.loads)
     args = parser.parse_args()
 
     # Some application-specifig setup code
@@ -147,12 +160,16 @@ def interval_readersender():
         'init': {},
         'read': {},
     }
+    readerargs['init'].update(args.reader_init_args or {})
+    readerargs['read'].update(args.read_args or {})
     sender = args.sender
     senderargs = {
         'init': {},
         'send': {},
         'disconnect_after_send': False,
     }
+    senderargs['init'].update(args.sender_init_args or {})
+    senderargs['send'].update(args.send_args or {})
 
     # Set up logger
     print("Setting up logging module")

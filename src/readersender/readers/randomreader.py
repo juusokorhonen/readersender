@@ -8,8 +8,6 @@ Random value reader for testing.
 @license:       MIT License
 """
 import random
-import logging
-import json
 import datetime
 from ..reader import Reader
 from . import SchemeReader

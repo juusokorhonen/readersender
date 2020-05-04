@@ -7,10 +7,8 @@ Customizable reader for testing.
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
-import random
 import logging
 import json
-import datetime
 from ..reader import Reader
 
 

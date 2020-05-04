@@ -9,7 +9,7 @@ Unit tests using the pytest framework.
 """
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../src/readersender/'))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', "src")))
 import readersender    # noqa: E402
 
 

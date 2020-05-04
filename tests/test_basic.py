@@ -3,12 +3,11 @@
 """
 Unit tests using the pytest framework.
 
-@file           test_module.py
+@file           test_basic.py
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
 import sys
-import pytest
 
 
 # Test definitions
@@ -29,14 +28,20 @@ def test_readersender():
     """
     from .context import readersender
 
-    with pytest.raises(TypeError):
-        readersender.ReaderSender()   # NOTE: Abstract class
+    assert isinstance(readersender.ReaderSender(), object)
+    assert isinstance(readersender.Reader(), readersender.ReaderSender)
+    assert isinstance(readersender.Sender(), readersender.ReaderSender)
 
-    with pytest.raises(TypeError):
-        readersender.Reader()
 
-    with pytest.raises(TypeError):
-        readersender.Sender()
+def test_readersender_context():
+    """Tests context functionality of readersender.
+    """
+    from .context import readersender
+
+    with readersender.ReaderSender() as rs:
+        assert rs.connected
+        rs.disconnect()
+        assert not rs.connected
 
 
 def test_fooreader():
