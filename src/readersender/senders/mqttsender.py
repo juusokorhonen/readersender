@@ -39,7 +39,7 @@ if mqtt is not None:
             self.connected = False
             self.client = mqtt.Client()
 
-        @only_disconnected
+        @only_disconnected()
         def connect(self):
             """Connects to the MQTT instance.
             """
@@ -63,7 +63,7 @@ if mqtt is not None:
             """
             self.connected = True
 
-        @only_connected
+        @only_connected()
         def disconnect(self):
             """Disconnects the MQTT instance.
             """
