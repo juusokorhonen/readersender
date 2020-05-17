@@ -98,7 +98,7 @@ def read_value():
     readerargs['read'].update(args.read_args or {})
 
     # Set up logger
-    print("Setting up logging module")
+    #print("Setting up logging module")
 
     logname = 'read_value'
     loglevel = logging.INFO
