@@ -131,7 +131,7 @@ def read_value():
     data = read_from_reader(reader,
                             readerargs,
                             logger=logger, loglevel=loglevel)
-    logger.dedug("Read finished.")
+    logger.debug("Read finished.")
     sys.stdout.write(data)
     sys.stdout.flush()
     sys.exit(0)
