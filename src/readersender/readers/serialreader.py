@@ -30,7 +30,7 @@ class SerialReader(Reader):
 
     def __init__(self, port, serial_config={}, read_command=None,
                  read_mode='line', max_bytes=1, end_mark='\n',
-                 encoding='utf-8',
+                 encoding='utf-8', timeout=None,
                  **kwargs):
         """Initializes a new SerialReader object.
         """
@@ -40,6 +40,9 @@ class SerialReader(Reader):
         self._serial_config = self.DEFAULT_SERIAL_CONFIG.copy()
         self._serial_config.update(serial_config)
         self._serial_config['port'] = port
+        if timeout is not None:
+            self._serial_config['timeout'] = float(timeout)
+            self._serial_config['write_timeout'] = float(timeout)
 
         # NOTE: Opens connection on creation
         self._serial = serial.Serial(**self._serial_config)
