@@ -26,14 +26,15 @@ class SerialReader(Reader):
         dsrdtr=False,
         inter_byte_timeout=None
     )
-    READ_MODES = ['line', 'bytes']
+    READ_MODES = ['line', 'bytes', 'until']
 
     def __init__(self, port, serial_config={}, read_command=None,
-                 read_mode='line', max_bytes=1, encoding='utf-8',
-                 *args, **kwargs):
+                 read_mode='line', max_bytes=1, end_mark='\n',
+                 encoding='utf-8',
+                 **kwargs):
         """Initializes a new SerialReader object.
         """
-        super().__init__(*args, **kwargs)
+        super().__init__(**kwargs)
         # Any custom initialization goes here or to subclasses
 
         self._serial_config = self.DEFAULT_SERIAL_CONFIG.copy()
@@ -51,6 +52,8 @@ class SerialReader(Reader):
         self._read_mode = read_mode
 
         self._max_bytes = max(1, int(max_bytes))
+
+        self._end_mark = str(end_mark)
 
     @only_connected(action='warn')
     def read(self, flush=False):
@@ -78,8 +81,11 @@ class SerialReader(Reader):
             except serial.SerialTimeoutException:
                 pass
         try:
-            return self.serial.readline().decode(self.encoding) if self.read_mode == "line"\
-                   else self.serial.read(self.max_bytes).decode(self.encoding)
+            return self.serial.readline().decode(self.encoding)\
+                   if self.read_mode == "line"\
+                   else self.serial.read(self.max_bytes).decode(self.encoding)\
+                   if self.read_mode == 'bytes'\
+                   else self.serial.read_until(self.end_mark).decode(self.encoding)
         except serial.SerialTimeoutException:
             return None
 
@@ -161,3 +167,15 @@ class SerialReader(Reader):
         """Sets maximum bytes to read in 'bytes' read mode.
         """
         self._max_bytes = max(1, int(value))
+
+    @property
+    def end_mark(self):
+        """The value to read until.
+        """
+        return self._end_mark
+
+    @end_mark.setter
+    def end_mark(self, value):
+        """Set the end mark value for read mode 'until'.
+        """
+        self._end_mark = str(value)
