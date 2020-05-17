@@ -78,7 +78,8 @@ class SerialReader(Reader):
             except serial.SerialTimeoutException:
                 pass
         try:
-            return self.serial.readline().decode(self.encoding)
+            return self.serial.readline().decode(self.encoding) if self.read_mode == "line"\
+                   else self.serial.read(self.max_bytes).decode(self.encoding)
         except serial.SerialTimeoutException:
             return None
 
