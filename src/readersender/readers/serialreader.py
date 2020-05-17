@@ -71,7 +71,7 @@ if serial is not None:
                 except serial.SerialTimeoutException:
                     pass
             try:
-                return self.serial.readline()
+                return self.serial.readline().decode(self.encoding)
             except serial.SerialTimeoutException:
                 return None
 
