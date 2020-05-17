@@ -19,15 +19,15 @@ from ..helpers import (only_connected, only_disconnected)
 
 
 if mqtt is not None:
-    MQTT_DEFAULT_CONFIG = {
-        'host': 'localhost',
-        'port': 1883,
-        'keepalive': 60,
-        'bind_address': '',
-        'sync': False
-    }
+    class MqttSender(Sender):
+        MQTT_DEFAULT_CONFIG = {
+            'host': 'localhost',
+            'port': 1883,
+            'keepalive': 60,
+            'bind_address': '',
+            'sync': False
+        }
 
-    class MQTTSender(Sender):
         def __init__(self, config=None, *args, **kwargs):
             """Initializes a new MQTTSender.
             """

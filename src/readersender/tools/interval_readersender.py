@@ -141,16 +141,16 @@ def interval_readersender():
     parser.add_argument('--stdout', help="direct logs to stdout (default: no)",
                         action='store_true')
     parser.add_argument('--reader_init_args', 
-                        help="Additional key-value arguments for reader initialization", 
+                        help="Additional key-value arguments for reader initialization",
                         type=json.loads)
     parser.add_argument('--read_args', 
-                        help="Additional key-value arguments for read command", 
+                        help="Additional key-value arguments for read command",
                         type=json.loads)
     parser.add_argument('--sender_init_args', 
-                        help="Additional key-value arguments for sender initialization", 
+                        help="Additional key-value arguments for sender initialization",
                         type=json.loads)
     parser.add_argument('--send_args', 
-                        help="Additional key-value arguments for send command", 
+                        help="Additional key-value arguments for send command",
                         type=json.loads)
     args = parser.parse_args()
 
