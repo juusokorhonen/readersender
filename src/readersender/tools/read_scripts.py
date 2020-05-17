@@ -3,7 +3,7 @@
 """
 Console reader
 
-@file           read_value.py
+@file           read_scripts.py
 @author:        Juuso Korhonen (juusokorhonen on github.com)
 @license:       MIT License
 """
@@ -20,9 +20,9 @@ import importlib
 sys.path.insert(0, os.path.abspath('../readersender/'))
 
 
-def read_value(readername,
-               readerargs=None,
-               logger=None, loglevel=logging.INFO):
+def read_from_reader(readername,
+                     readerargs=None,
+                     logger=None, loglevel=logging.INFO):
     """Reads a single value from reader.
     """
     # Set up reader
@@ -73,7 +73,7 @@ def read_value(readername,
     return data
 
 
-def main():
+def read_value():
     """Sets up a reader and prints a single value.
     """
     parser = argparse.ArgumentParser()
@@ -128,9 +128,9 @@ def main():
     signal.signal(signal.SIGTERM, exit_gracefully)
 
     logger.debug("Starting to read value")
-    data = read_value(reader,
-                      readerargs,
-                      logger=logger, loglevel=loglevel)
+    data = read_from_reader(reader,
+                            readerargs,
+                            logger=logger, loglevel=loglevel)
     logger.dedug("Read finished.")
     sys.stdout.write(data)
     sys.stdout.flush()
@@ -138,4 +138,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    read_value()
